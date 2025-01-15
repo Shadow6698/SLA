@@ -1,0 +1,183 @@
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player.PlayerGui
+
+-- Criando o botão principal movível
+local mainButton = Instance.new("TextButton")
+mainButton.Size = UDim2.new(0, 200, 0, 50)
+mainButton.Position = UDim2.new(0.1, 0, 0.1, 0)
+mainButton.Text = "Angel Hub"
+mainButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+mainButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+mainButton.Parent = screenGui
+
+-- Tornar o botão movível
+local dragging = false
+local dragStart, startPos
+
+mainButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = mainButton.Position
+    end
+end)
+
+mainButton.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        local delta = input.Position - dragStart
+        mainButton.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+mainButton.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+-- Função para exibir uma mensagem temporária
+local function showMessage(text, duration)
+    local message = Instance.new("TextLabel")
+    message.Size = UDim2.new(0.3, 0, 0.05, 0)
+    message.Position = UDim2.new(0.35, 0, 0.45, 0)
+    message.Text = text
+    message.TextSize = 18
+    message.TextColor3 = Color3.fromRGB(255, 255, 255)
+    message.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    message.BackgroundTransparency = 0.5
+    message.Parent = screenGui
+    
+    task.delay(duration, function()
+        message:Destroy()
+    end)
+end
+
+-- Criando a biblioteca de scripts
+mainButton.MouseButton1Click:Connect(function()
+    local libraryFrame = Instance.new("Frame")
+    libraryFrame.Size = UDim2.new(0, 700, 0, 500)
+    libraryFrame.Position = UDim2.new(0.5, -350, 0.5, -250)
+    libraryFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+    libraryFrame.Parent = screenGui
+
+    -- Tornar a biblioteca móvel
+    local draggingLibrary = false
+    local dragStartLibrary, startPosLibrary
+
+    libraryFrame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            draggingLibrary = true
+            dragStartLibrary = input.Position
+            startPosLibrary = libraryFrame.Position
+        end
+    end)
+
+    libraryFrame.InputChanged:Connect(function(input)
+        if draggingLibrary and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStartLibrary
+            libraryFrame.Position = UDim2.new(
+                startPosLibrary.X.Scale,
+                startPosLibrary.X.Offset + delta.X,
+                startPosLibrary.Y.Scale,
+                startPosLibrary.Y.Offset + delta.Y
+            )
+        end
+    end)
+
+    libraryFrame.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            draggingLibrary = false
+        end
+    end)
+
+    -- Título da biblioteca
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 0, 50)
+    title.Text = "Biblioteca de Scripts"
+    title.TextSize = 20
+    title.TextColor3 = Color3.fromRGB(0, 0, 0)
+    title.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+    title.Parent = libraryFrame
+
+    -- Botão de ocultar
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -35, 0, 10)
+    closeButton.Text = "X"
+    closeButton.TextSize = 20
+    closeButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+    closeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    closeButton.Parent = libraryFrame
+
+    closeButton.MouseButton1Click:Connect(function()
+        libraryFrame.Visible = false
+    end)
+
+    -- Lista de scripts antigos
+    local scriptsAntigos = {
+        {"Infinite Yield", 'https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'},
+        {"Rael Hub", "https://raw.githubusercontent.com/Laelmano24/Rael-Hub/main/main.txt"},
+        {"Ghost Hub", "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub"},
+        {"Touch Speed", nil},
+        {"Fê Emotes", "https://scriptblox.com/raw/Brookhaven-RP-all-emotes-6849"},
+        {"Pesquisar Scripts", "https://raw.githubusercontent.com/AZYsGithub/chillz-workshop/main/ScriptSearcher"}
+    }
+
+    -- Lista de scripts novos
+    local scriptsNovos = {
+        {"AstroX Hub", "https://raw.githubusercontent.com/AstroXTeam/AstroXHubNeta/refs/heads/main/%D9%87%D9%84%D9%88.lua"},
+        {"Nameless Admin", "https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"},
+        {"Sander X", "https://raw.githubusercontent.com/kigredns/SanderXV4.2.2/refs/heads/main/New.lua"},
+        {"Toque de Blocos", nil},
+        {"ORION-BL", 'https://raw.githubusercontent.com/igormsqq/ORION-BL/main/KEYSYS'},
+        {"Shox Script", 'https://raw.githubusercontent.com/Leozinxz/Shox-Script-Hub/refs/heads/main/devzak'},
+        {"Y-HUB", 'https://raw.githubusercontent.com/Luarmor123/community-Y-HUB/refs/heads/main/YHUB%20ENGLISH'}
+    }
+
+    -- Função para criar botões
+    local function createScriptButtons(scriptList, scripts)
+        for i, script in ipairs(scripts) do
+            local button = Instance.new("TextButton")
+            button.Size = UDim2.new(1, -10, 0, 50)
+            button.Position = UDim2.new(0, 5, 0, (i - 1) * 60)
+            button.Text = script[1]
+            button.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+            button.TextColor3 = Color3.fromRGB(0, 0, 0)
+            button.Parent = scriptList
+
+            button.MouseButton1Click:Connect(function()
+                if script[2] then
+                    loadstring(game:HttpGet(script[2]))()
+                else
+                    print(script[1] .. " não possui URL de script.")
+                end
+            end)
+        end
+    end
+
+    -- Criando listas de scripts
+    local scriptList1 = Instance.new("ScrollingFrame")
+    scriptList1.Size = UDim2.new(0.5, -15, 1, -60)
+    scriptList1.Position = UDim2.new(0, 10, 0, 50)
+    scriptList1.CanvasSize = UDim2.new(0, 0, 0, 800)
+    scriptList1.ScrollBarThickness = 12
+    scriptList1.BackgroundColor3 = Color3.fromRGB(240, 240, 240)
+    scriptList1.Parent = libraryFrame
+
+    local scriptList2 = Instance.new("ScrollingFrame")
+    scriptList2.Size = UDim2.new(0.5, -15, 1, -60)
+    scriptList2.Position = UDim2.new(0.5, 5, 0, 50)
+    scriptList2.CanvasSize = UDim2.new(0, 0, 0, 1000)
+    scriptList2.ScrollBarThickness = 12
+    scriptList2.BackgroundColor3 = Color3.fromRGB(240, 240, 240)
+    scriptList2.Parent = libraryFrame
+
+    createScriptButtons(scriptList1, scriptsAntigos)
+    createScriptButtons(scriptList2, scriptsNovos)
+end)
